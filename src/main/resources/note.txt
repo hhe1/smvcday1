@@ -1,0 +1,31 @@
+spring 和springmvc整合
+
+1 spring 是否需要整合springmvc（是否需要在web下配置spring ioc容器的listener）
+  两种观点：整合和不整合
+           整合：通常情况下：数据源，事物，整合其他框架都放在spring的配置文件中，而不是放在springmvc的配置文件中
+            		还有service和dao。springmvc内只放handler的一些信息。
+           不整合：直接将spring的配置放入springmvc通过引入import 引入外部的配置文件即可
+           
+2 spring ,springmvc都配置了context:component-scan，且扫描的包一样时则会导致bean初始化两次
+  解决办法有两种：1 规定各自扫描不同过的包
+                2 在mvc使用context:include-filter规定扫描的包，use-default-filter=false,type=annotation express = controller,controlleradvice
+                  并在 spring中排除这两个
+  注意虽然spring作为mvc的父容器，但mvc初始化时只会扫描自己容器内的bean而不会去扫描spring中的bean，所以mvc中需要配置context:component-scan选项
+  
+  use-default-filter=false 读取properties中的配置文件也不会生效
+                  
+3 springmvc 可以引用spring 中定义的bean，但spring 却不能引mvc中的bean，
+  涉及到上下文的问题，spring作为父的上下文不能访问子springmvc的上下文
+  
+4 
+@Value的值有两类：
+
+① ${ property : default_value }直接读取配置文件的值
+
+② #{ obj.property? : default_value }正则表达式
+  
+
+  
+
+
+                        
